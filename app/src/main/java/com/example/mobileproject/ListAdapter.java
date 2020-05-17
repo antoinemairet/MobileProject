@@ -10,7 +10,7 @@ import java.util.List;
 
 
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
-    private List<String> values;
+    private List<Movie> values;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -29,7 +29,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         }
     }
 
-    public void add(int position, String item) {
+    public void add(int position, Movie item) {
         values.add(position, item);
         notifyItemInserted(position);
     }
@@ -40,7 +40,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public ListAdapter(List<String> myDataset) {
+    public ListAdapter(List<Movie> myDataset) {
         values = myDataset;
     }
 
@@ -64,8 +64,8 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        final String name = values.get(position);
-        holder.txtHeader.setText(name);
+        final Movie currentMovie = values.get(position);
+        holder.txtHeader.setText(currentMovie.getTitle());
         holder.txtHeader.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,7 +73,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
             }
         });
 
-        holder.txtFooter.setText("Footer: " + name);
+        holder.txtFooter.setText("Rank : "+currentMovie.getRank());
     }
 
     // Return the size of your dataset (invoked by the layout manager)
