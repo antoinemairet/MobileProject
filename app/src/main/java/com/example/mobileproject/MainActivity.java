@@ -5,8 +5,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -23,13 +25,15 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity  {
     private RecyclerView recyclerView;
     private ListAdapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private static final String BASE_URL = "https://imdb-api.com/";
     private SharedPreferences sharedPreferences;
     private Gson gson;
+    private ListAdapter.RecyclerViewClickListener listener;
+    private ArrayList<Movie> listMovie;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,15 +44,15 @@ public class MainActivity extends AppCompatActivity {
                 .create();
 
         sharedPreferences=getSharedPreferences("application_movie", Context.MODE_PRIVATE);
-        List<Movie> movieList = getDataFromCache();
-        if(movieList!= null) {
-            showList(movieList);
+        listMovie = getDataFromCache();
+        if(listMovie!= null) {
+            showList(listMovie);
         }else{
             makeApiCall();
         }
     }
 
-    private List<Movie> getDataFromCache() {
+    private ArrayList<Movie> getDataFromCache() {
         String jsonMovie = sharedPreferences.getString(Constants.KEY_MOVIE_LIST,null);
 
         if(jsonMovie == null) {
@@ -60,20 +64,32 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void showList(List<Movie> listMovie) {
+    private void showList(ArrayList<Movie> listMovie) {
+        setOnClickListener();
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         // use a linear layout manager
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-
-
-
-
-        mAdapter = new ListAdapter(listMovie);
+        mAdapter = new ListAdapter(listMovie,listener);
         recyclerView.setAdapter(mAdapter);
     }
 
+    private void setOnClickListener() {
+        listener = new ListAdapter.RecyclerViewClickListener() {
+            @Override
+            public void onClick(View v, int position) {
+                Intent intent = new Intent(getApplicationContext(),DetailsActivity.class);
+
+                intent.putExtra("fullTitle", listMovie.get(position).getFullTitle());
+                intent.putExtra("rank", listMovie.get(position).getRank());
+                intent.putExtra("crew", listMovie.get(position).getCrew());
+                intent.putExtra("rating", listMovie.get(position).getImDbRating());
+                intent.putExtra("year", listMovie.get(position).getYear());
+                startActivity(intent);
+            }
+        };
+    }
 
 
     private void makeApiCall(){
@@ -92,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<RestMoviesResponse> call, Response<RestMoviesResponse> response) {
                 if(response.isSuccessful() && response.body() != null){
 
-                    List<Movie> listMovie = response.body().items; //HERE
+                    listMovie = response.body().items; //HERE
                     saveList(listMovie);
                     showList(listMovie);
 
@@ -121,4 +137,7 @@ public class MainActivity extends AppCompatActivity {
     private void showError() {
         Toast.makeText(getApplicationContext(),"API Error",Toast.LENGTH_SHORT).show();
     }
+
+
+
 }

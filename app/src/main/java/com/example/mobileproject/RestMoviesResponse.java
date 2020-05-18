@@ -1,8 +1,9 @@
 package com.example.mobileproject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RestMoviesResponse {
 
-    public List<Movie> items;
+    public ArrayList<Movie> items;
 }
