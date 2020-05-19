@@ -1,20 +1,30 @@
 package com.example.mobileproject;
 import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
+import com.squareup.picasso.Picasso;
 
-
-public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
+public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>  {
 
     private ArrayList<Movie> values;
     private RecyclerViewClickListener listener;
+    private ImageView mImageView;
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
@@ -22,6 +32,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         // each data item is just a string in this case
         TextView txtHeader;
         TextView txtFooter;
+        ImageView mImageView;
         View layout;
 
 
@@ -30,6 +41,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
             layout = v;
             txtHeader = (TextView) v.findViewById(R.id.firstLine);
             txtFooter = (TextView) v.findViewById(R.id.secondLine);
+            mImageView = (ImageView) v.findViewById(R.id.icon) ;
             v.setOnClickListener(this);
         }
 
@@ -77,10 +89,13 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         // - replace the contents of the view with that element
         final Movie currentMovie = values.get(position);
         holder.txtHeader.setText(currentMovie.getTitle());
-        
-
         holder.txtFooter.setText("Rank : "+currentMovie.getRank());
+        Picasso.get().load(currentMovie.getImage()).resize(500,500).into(holder.mImageView);
+
+
+
     }
+
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override
@@ -91,4 +106,6 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     public interface RecyclerViewClickListener{
         void onClick(View v, int position);
     }
+
+
 }

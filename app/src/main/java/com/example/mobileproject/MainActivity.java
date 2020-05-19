@@ -86,6 +86,7 @@ public class MainActivity extends AppCompatActivity  {
                 intent.putExtra("crew", listMovie.get(position).getCrew());
                 intent.putExtra("rating", listMovie.get(position).getImDbRating());
                 intent.putExtra("year", listMovie.get(position).getYear());
+                intent.putExtra("image",listMovie.get(position).getImage());
                 startActivity(intent);
             }
         };
