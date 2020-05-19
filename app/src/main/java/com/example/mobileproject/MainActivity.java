@@ -1,14 +1,144 @@
 package com.example.mobileproject;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+public class MainActivity extends AppCompatActivity  {
+    private RecyclerView recyclerView;
+    private ListAdapter mAdapter;
+    private RecyclerView.LayoutManager layoutManager;
+    private static final String BASE_URL = "https://imdb-api.com/";
+    private SharedPreferences sharedPreferences;
+    private Gson gson;
+    private ListAdapter.RecyclerViewClickListener listener;
+    private ArrayList<Movie> listMovie;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        gson = new GsonBuilder()
+                .setLenient()
+                .create();
+
+        sharedPreferences=getSharedPreferences("application_movie", Context.MODE_PRIVATE);
+        listMovie = getDataFromCache();
+        if(listMovie!= null) {
+            showList(listMovie);
+        }else{
+            makeApiCall();
+        }
     }
+
+    private ArrayList<Movie> getDataFromCache() {
+        String jsonMovie = sharedPreferences.getString(Constants.KEY_MOVIE_LIST,null);
+
+        if(jsonMovie == null) {
+            return null;
+        }else {
+            Type listType = new TypeToken<List<Movie>>() {}.getType();
+            return gson.fromJson(jsonMovie, listType);
+        }
+    }
+
+
+    private void showList(ArrayList<Movie> listMovie) {
+        setOnClickListener();
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        recyclerView.setHasFixedSize(true);
+        // use a linear layout manager
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        mAdapter = new ListAdapter(listMovie,listener);
+        recyclerView.setAdapter(mAdapter);
+    }
+
+    private void setOnClickListener() {
+        listener = new ListAdapter.RecyclerViewClickListener() {
+            @Override
+            public void onClick(View v, int position) {
+                Intent intent = new Intent(getApplicationContext(),DetailsActivity.class);
+
+                intent.putExtra("fullTitle", listMovie.get(position).getFullTitle());
+                intent.putExtra("rank", listMovie.get(position).getRank());
+                intent.putExtra("crew", listMovie.get(position).getCrew());
+                intent.putExtra("rating", listMovie.get(position).getImDbRating());
+                intent.putExtra("year", listMovie.get(position).getYear());
+                intent.putExtra("image",listMovie.get(position).getImage());
+                startActivity(intent);
+            }
+        };
+    }
+
+
+    private void makeApiCall(){
+
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build();
+
+        MovieAPI movieApi = retrofit.create(MovieAPI.class);
+
+        Call<RestMoviesResponse> call = movieApi.getMoviesResponse();
+        call.enqueue(new Callback<RestMoviesResponse>() {
+            @Override
+            public void onResponse(Call<RestMoviesResponse> call, Response<RestMoviesResponse> response) {
+                if(response.isSuccessful() && response.body() != null){
+
+                    listMovie = response.body().items; //HERE
+                    saveList(listMovie);
+                    showList(listMovie);
+
+                }else{
+                    showError();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RestMoviesResponse> call, Throwable t) {
+                showError();
+            }
+        });
+
+    }
+
+    private void saveList(List<Movie> listMovie) {
+        String jsonString = gson.toJson(listMovie);
+        sharedPreferences
+                .edit()
+                .putString(Constants.KEY_MOVIE_LIST, jsonString)
+                .apply();
+        Toast.makeText(getApplicationContext(),"List saved",Toast.LENGTH_SHORT).show();
+    }
+
+    private void showError() {
+        Toast.makeText(getApplicationContext(),"API Error",Toast.LENGTH_SHORT).show();
+    }
+
+
+
 }
