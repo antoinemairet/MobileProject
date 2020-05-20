@@ -1,7 +1,11 @@
+/*
+ * Copyright (c) 2020. Antoine Mairet
+ * All Rights Reserved
+ */
+
 package com.example.mobileproject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class RestMoviesResponse {
 

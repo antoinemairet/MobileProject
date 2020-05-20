@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2020. Antoine Mairet
+  ~ All Rights Reserved
+  -->
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="?android:attr/listPreferredItemHeight"
@@ -13,32 +18,45 @@
         android:layout_marginTop="0dp"
         android:layout_marginRight="6dip"
         android:layout_marginBottom="0dp"
-        android:contentDescription="TODO"
-        android:src="@mipmap/ic_launcher" />
+        android:contentDescription="@string/todo"
+        android:src="@mipmap/ic_launcher"
+        android:layout_marginEnd="6dip" />
 
     <TextView
         android:id="@+id/secondLine"
-        android:layout_width="fill_parent"
-        android:layout_height="26dip"
-        android:layout_alignParentBottom="true"
+        android:layout_width="315dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="8dp"
         android:layout_toRightOf="@id/icon"
         android:ellipsize="marquee"
-        android:text="Description"
+        android:singleLine="true"
+        android:text="@string/description"
         android:textSize="12sp"
-        android:singleLine="true" />
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="8dp"
+        android:layout_toEndOf="@id/icon" />
 
     <TextView
         android:id="@+id/firstLine"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/secondLine"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
         android:layout_alignWithParentIfMissing="true"
+        android:layout_above="@id/secondLine"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="7dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginRight="9dp"
+        android:layout_marginBottom="1dp"
         android:layout_toRightOf="@id/icon"
         android:gravity="center_vertical"
-        android:text="Example application"
-        android:textSize="16sp" />
+        android:text="@string/example_application"
+        android:textSize="16sp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="7dp"
+        android:layout_marginEnd="9dp"
+        android:layout_toEndOf="@id/icon" />
 
 </RelativeLayout>

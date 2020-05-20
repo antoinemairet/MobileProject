@@ -1,5 +1,11 @@
+/*
+ * Copyright (c) 2020. Antoine Mairet
+ * All Rights Reserved
+ */
+
 package com.example.mobileproject;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,14 +32,12 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity  {
-    private RecyclerView recyclerView;
-    private ListAdapter mAdapter;
-    private RecyclerView.LayoutManager layoutManager;
-    private static final String BASE_URL = "https://imdb-api.com/";
-    private SharedPreferences sharedPreferences;
-    private Gson gson;
+
     private ListAdapter.RecyclerViewClickListener listener;
+    private SharedPreferences sharedPreferences;
     private ArrayList<Movie> listMovie;
+    private Gson gson;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +56,7 @@ public class MainActivity extends AppCompatActivity  {
         }
     }
 
+    // Function used to fetch data from the cache
     private ArrayList<Movie> getDataFromCache() {
         String jsonMovie = sharedPreferences.getString(Constants.KEY_MOVIE_LIST,null);
 
@@ -63,24 +68,28 @@ public class MainActivity extends AppCompatActivity  {
         }
     }
 
-
+    // Show the list of movies using an adapter
     private void showList(ArrayList<Movie> listMovie) {
+
         setOnClickListener();
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
-        // use a linear layout manager
-        layoutManager = new LinearLayoutManager(this);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        mAdapter = new ListAdapter(listMovie,listener);
+        ListAdapter mAdapter = new ListAdapter(listMovie, listener);
         recyclerView.setAdapter(mAdapter);
+
     }
 
+    // Function which start details activity with the information of the movie selected
     private void setOnClickListener() {
+
         listener = new ListAdapter.RecyclerViewClickListener() {
             @Override
             public void onClick(View v, int position) {
-                Intent intent = new Intent(getApplicationContext(),DetailsActivity.class);
+                Intent intent = new Intent(MainActivity.this,DetailsActivity.class);
 
+                //Give all the information of a particular movie to the next activity: DetailsActivity
                 intent.putExtra("fullTitle", listMovie.get(position).getFullTitle());
                 intent.putExtra("rank", listMovie.get(position).getRank());
                 intent.putExtra("crew", listMovie.get(position).getCrew());
@@ -90,14 +99,13 @@ public class MainActivity extends AppCompatActivity  {
                 startActivity(intent);
             }
         };
-    }
 
+    }
 
     private void makeApiCall(){
 
-
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
+                .baseUrl(Constants.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
@@ -106,10 +114,10 @@ public class MainActivity extends AppCompatActivity  {
         Call<RestMoviesResponse> call = movieApi.getMoviesResponse();
         call.enqueue(new Callback<RestMoviesResponse>() {
             @Override
-            public void onResponse(Call<RestMoviesResponse> call, Response<RestMoviesResponse> response) {
+            public void onResponse(@NonNull Call<RestMoviesResponse> call, @NonNull Response<RestMoviesResponse> response) {
                 if(response.isSuccessful() && response.body() != null){
 
-                    listMovie = response.body().items; //HERE
+                    listMovie = response.body().items;
                     saveList(listMovie);
                     showList(listMovie);
 
@@ -119,13 +127,14 @@ public class MainActivity extends AppCompatActivity  {
             }
 
             @Override
-            public void onFailure(Call<RestMoviesResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<RestMoviesResponse> call, @NonNull Throwable t) {
                 showError();
             }
         });
 
     }
 
+    // Function for save the list using sharedPreference
     private void saveList(List<Movie> listMovie) {
         String jsonString = gson.toJson(listMovie);
         sharedPreferences
@@ -135,6 +144,7 @@ public class MainActivity extends AppCompatActivity  {
         Toast.makeText(getApplicationContext(),"List saved",Toast.LENGTH_SHORT).show();
     }
 
+    // Show an error when we can't access to the API
     private void showError() {
         Toast.makeText(getApplicationContext(),"API Error",Toast.LENGTH_SHORT).show();
     }

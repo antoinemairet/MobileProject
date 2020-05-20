@@ -1,3 +1,21 @@
+<!--
+  ~ Copyright (c) 2020. Antoine Mairet
+  ~ All Rights Reserved
+  -->
+
 <resources>
-    <string name="app_name">MobileProject</string>
+    <string name="app_name">Top Movies List</string>
+    <string name="Details"> Movie Details</string>
+    <string name="fulltitle">fullTitle</string>
+    <string name="rank">RANK</string>
+    <string name="year">year</string>
+    <string name="crew">crew</string>
+    <string name="rating">rating</string>
+    <string name="todo">TODO</string>
+    <string name="example_application">Example application</string>
+    <string name="description">Description</string>
+    <string name="let_s_go">Let\'s Go</string>
+    <string name="top_movies_to_watch">Top Movies To Watch</string>
+    <string name="Name"> Antoine Mairet </string>
+
 </resources>

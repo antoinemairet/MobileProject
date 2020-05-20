@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2020. Antoine Mairet
+ * All Rights Reserved
+ */
+
 package com.example.mobileproject;
 
 public class Movie {
