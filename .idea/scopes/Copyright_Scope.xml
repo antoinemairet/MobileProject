@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="Copyright_Scope" pattern="file[app]:src/main/java/com/example/mobileproject/Constants.java||file[app]:src/main/java/com/example/mobileproject/DetailsActivity.java||file[app]:src/main/java/com/example/mobileproject/HomePageActivity.java||file[app]:src/main/java/com/example/mobileproject/ListAdapter.java||file[app]:src/main/java/com/example/mobileproject/MainListActivity.java||file[app]:src/main/java/com/example/mobileproject/model/Movie.java||file[app]:src/main/java/com/example/mobileproject/MovieAPI.java||file[app]:src/main/java/com/example/mobileproject/model/RestMoviesResponse.java||file[group:MobileProject]:*//*" />
+</component>

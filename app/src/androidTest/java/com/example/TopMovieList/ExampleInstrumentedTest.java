@@ -1,4 +1,9 @@
-package com.example.mobileproject;
+/*
+ * Copyright (c) 2020. Antoine Mairet
+ * All Rights Reserved
+ */
+
+package com.example.TopMovieList;
 
 import android.content.Context;
 

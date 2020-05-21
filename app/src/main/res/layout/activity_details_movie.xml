@@ -1,31 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2020. Antoine Mairet
+  ~ All Rights Reserved
+  -->
+
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_background">
 
 
     <ImageView
         android:id="@+id/imageMovie"
         android:layout_width="133dp"
         android:layout_height="210dp"
+        android:contentDescription="@string/todo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.057"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.122"
-         />
+        app:layout_constraintVertical_bias="0.122" />
 
     <TextView
         android:id="@+id/fullTitle"
         android:layout_width="208dp"
         android:layout_height="95dp"
         android:layout_marginTop="80dp"
-        android:text="fullTitle"
+        android:text="@string/fulltitle"
         android:textSize="19sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.407"
         app:layout_constraintStart_toEndOf="@+id/imageMovie"
@@ -35,7 +41,7 @@
         android:id="@+id/rank"
         android:layout_width="176dp"
         android:layout_height="36dp"
-        android:text="RANK"
+        android:text="@string/rank"
         android:textSize="19sp"
         app:layout_constraintBottom_toTopOf="@+id/year"
         app:layout_constraintEnd_toEndOf="parent"
@@ -49,7 +55,7 @@
         android:layout_width="313dp"
         android:layout_height="52dp"
         android:layout_marginTop="44dp"
-        android:text="year"
+        android:text="@string/year"
         android:textSize="19sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.275"
@@ -61,7 +67,7 @@
         android:layout_width="320dp"
         android:layout_height="70dp"
         android:layout_marginTop="12dp"
-        android:text="crew"
+        android:text="@string/crew"
         android:textSize="19sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.296"
@@ -72,7 +78,7 @@
         android:id="@+id/rating"
         android:layout_width="323dp"
         android:layout_height="55dp"
-        android:text="rating"
+        android:text="@string/rating"
         android:textSize="19sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -80,5 +86,50 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/crew"
         app:layout_constraintVertical_bias="0.066" />
+
+    <Button
+        android:id="@+id/AddWatchListButton"
+        android:layout_width="190dp"
+        android:layout_height="62dp"
+        android:text="@string/add_to_your_watch_list"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.914"
+        app:icon="@drawable/ic_add_black_24dp"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+        />
+
+    <TextView
+        android:id="@+id/txtAlreadyInWatchList"
+        android:layout_width="149dp"
+        android:layout_height="79dp"
+        android:background="@drawable/border_text_view"
+        android:drawableRight="@drawable/ic_thumb_up_black_30dp"
+        android:gravity="center"
+        android:text="@string/AlreadyAdded"
+        android:textSize="16sp"
+        android:textStyle="italic"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.95"
+        android:drawableEnd="@drawable/ic_thumb_up_black_30dp" />
+
+    <TextView
+        android:id="@+id/txtSource"
+        android:layout_width="220dp"
+        android:layout_height="23dp"
+        android:autoLink="web"
+        android:text="@string/source_https_www_imdb_com"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
