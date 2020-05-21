@@ -3,27 +3,28 @@
  * All Rights Reserved
  */
 
-package com.example.mobileproject;
+package com.example.TopMovieList.presentation.view;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.TopMovieList.Constants;
+import com.example.TopMovieList.R;
+import com.example.TopMovieList.presentation.model.Movie;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.squareup.picasso.Picasso;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.List;
 
 public class DetailsActivity extends AppCompatActivity {
 
@@ -73,7 +74,7 @@ public class DetailsActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(DetailsActivity.this,WatchListActivity.class);
+                Intent intent = new Intent(DetailsActivity.this, WatchListActivity.class);
 
                 String jsonString = gson.toJson(movie);
                 sharedPreferences

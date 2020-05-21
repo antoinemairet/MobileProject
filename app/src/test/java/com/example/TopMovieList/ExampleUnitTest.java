@@ -3,7 +3,7 @@
  * All Rights Reserved
  */
 
-package com.example.mobileproject;
+package com.example.TopMovieList;
 
 import org.junit.Test;
 

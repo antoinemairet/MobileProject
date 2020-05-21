@@ -3,7 +3,7 @@
  * All Rights Reserved
  */
 
-package com.example.mobileproject;
+package com.example.TopMovieList.presentation.view;
 import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +13,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
+
+import com.example.TopMovieList.presentation.model.Movie;
+import com.example.TopMovieList.R;
 import com.squareup.picasso.Picasso;
 
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>  {
@@ -48,7 +51,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>  {
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    ListAdapter(ArrayList<Movie> myDataset, RecyclerViewClickListener listener) {
+    public ListAdapter(ArrayList<Movie> myDataset, RecyclerViewClickListener listener) {
         values = myDataset;
         this.listener = listener;
     }

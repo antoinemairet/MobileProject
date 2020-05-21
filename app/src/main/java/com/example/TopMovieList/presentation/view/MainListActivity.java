@@ -3,7 +3,7 @@
  * All Rights Reserved
  */
 
-package com.example.mobileproject;
+package com.example.TopMovieList.presentation.view;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,9 +13,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
+
+import com.example.TopMovieList.Constants;
+import com.example.TopMovieList.presentation.model.Movie;
+import com.example.TopMovieList.data.MovieAPI;
+import com.example.TopMovieList.R;
+import com.example.TopMovieList.presentation.model.RestMoviesResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -87,7 +92,7 @@ public class MainListActivity extends AppCompatActivity  {
         listener = new ListAdapter.RecyclerViewClickListener() {
             @Override
             public void onClick(View v, int position) {
-                Intent intent = new Intent(MainListActivity.this,DetailsActivity.class);
+                Intent intent = new Intent(MainListActivity.this, DetailsActivity.class);
 
                 //Give all the information of a particular movie to the next activity: DetailsActivity
                 Movie movie = new Movie(listMovie.get(position).getId(),listMovie.get(position).getRank(),

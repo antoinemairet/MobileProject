@@ -3,7 +3,7 @@
  * All Rights Reserved
  */
 
-package com.example.mobileproject;
+package com.example.TopMovieList.presentation.view;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -16,6 +16,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.TopMovieList.Constants;
+import com.example.TopMovieList.R;
+import com.example.TopMovieList.presentation.model.Movie;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.squareup.picasso.Picasso;

@@ -5,7 +5,7 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.mobileproject">
+    package="com.example.TopMovieList">
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity   android:name=".HomePageActivity"
+        <activity   android:name="com.example.TopMovieList.presentation.view.HomePageActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,16 +24,16 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".DetailsActivity"
-                android:parentActivityName=".MainListActivity"
+        <activity android:name="com.example.TopMovieList.presentation.view.DetailsActivity"
+                android:parentActivityName="com.example.TopMovieList.presentation.view.MainListActivity"
                 android:label="@string/Details" />
 
-        <activity android:name=".MainListActivity"
+        <activity android:name="com.example.TopMovieList.presentation.view.MainListActivity"
             android:label="@string/app_name"
-                    android:parentActivityName=".HomePageActivity"/>
+                    android:parentActivityName="com.example.TopMovieList.presentation.view.HomePageActivity"/>
 
-        <activity android:name=".WatchListActivity"
-            android:parentActivityName=".HomePageActivity"
+        <activity android:name="com.example.TopMovieList.presentation.view.WatchListActivity"
+            android:parentActivityName="com.example.TopMovieList.presentation.view.HomePageActivity"
             android:label="Watch List" />
 
     </application>

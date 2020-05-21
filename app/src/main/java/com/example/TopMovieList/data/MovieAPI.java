@@ -3,7 +3,9 @@
  * All Rights Reserved
  */
 
-package com.example.mobileproject;
+package com.example.TopMovieList.data;
+
+import com.example.TopMovieList.presentation.model.RestMoviesResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
