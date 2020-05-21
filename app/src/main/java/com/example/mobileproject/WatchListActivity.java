@@ -8,7 +8,6 @@ package com.example.mobileproject;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -58,11 +57,13 @@ public class WatchListActivity extends AppCompatActivity {
     // And display the watch list if its not empty
     private void displayOfWatchListActivity() {
 
-        if(watchListMovie != null) {
-            txtEmptyList.setVisibility(View.GONE);
-            txtHowAddToTheList.setVisibility(View.GONE);
+        if(watchListMovie.size() != 0) {
+            txtEmptyList.setVisibility(View.INVISIBLE);
+            txtHowAddToTheList.setVisibility(View.INVISIBLE);
             showWatchList(watchListMovie);
         }else{
+            txtEmptyList.setVisibility(View.VISIBLE);
+            txtHowAddToTheList.setVisibility(View.VISIBLE);
             Toast.makeText(getApplicationContext(),"WatchList Null",Toast.LENGTH_SHORT).show();
         }
 
@@ -71,55 +72,54 @@ public class WatchListActivity extends AppCompatActivity {
     private ArrayList<Movie> ifNewMovieInWatchList() {
         jsonMovie = sharedPreferences.getString(Constants.KEY_MOVIE_FROM_DETAILS_TO_WATCHLIST,null);
         Movie movie = gson.fromJson(jsonMovie, Movie.class);
-        if(movie.getId().equals("-1")) {
+        if(movie.getId().equals("-1")) { // We are from the home page without a movie to add
 
-            Log.d("TAG", "JsonMovie null");
             return watchListMovie;
 
-        }else {
-            Log.d("TAG", "JsonMovie non null");
+        }else { // We are from details with a movie to add
 
-            if(movie == null){Log.d("TAG", "Movie null");}
-            Log.d("TAG", "Apres");
             watchListMovie = getWatchList();
-
             watchListMovie.add(movie);
         }
-
         return watchListMovie;
     }
 
     // Show the list of movies using an adapter
     private void showWatchList(ArrayList<Movie> watchListMovie) {
 
+        Context c = this;
         RecyclerView recyclerView = findViewById(R.id.recyclerViewWatchList);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        WatchListAdapter mAdapter = new WatchListAdapter(watchListMovie, listener);
+        WatchListAdapter mAdapter = new WatchListAdapter(watchListMovie, listener,c);
         recyclerView.setAdapter(mAdapter);
 
     }
+
+    // Fetch the watch list from the cache
     private ArrayList<Movie> getWatchList() {
+
         jsonMovie = sharedPreferences.getString(Constants.KEY_MOVIE_WATCHLIST,null);
-        Log.d("TAG", jsonMovie);
-        if(jsonMovie == null) {
-            Log.d("TAG", "jsonMovie NULL");
+        if(jsonMovie == null) { // Empty watch list
+
             return new ArrayList<>();
-        }else {
-            Log.d("TAG", "jsonMovie NON NULL");
+
+        }else { // Watch list not empty
+
             Type listType = new TypeToken<ArrayList<Movie>>() {}.getType();
             return gson.fromJson(jsonMovie, listType);
         }
     }
+
     // Function for save the list using sharedPreference
     private void saveWatchList(ArrayList<Movie> watchListMovie) {
+
         String jsonString = gson.toJson(watchListMovie);
         sharedPreferences
                 .edit()
                 .putString(Constants.KEY_MOVIE_WATCHLIST, jsonString)
                 .apply();
-        //Toast.makeText(WatchListActivity.this,"List saved",Toast.LENGTH_SHORT).show();
     }
 
     public WatchListActivity(WatchListAdapter.RecyclerViewClickListener listener) {

@@ -22,11 +22,13 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 public class WatchListAdapter extends RecyclerView.Adapter<WatchListAdapter.ViewHolder>{
-    private ArrayList<Movie> values;
+
+    private static SharedPreferences sharedPreferences;
     private RecyclerViewClickListener listener;
+    private ArrayList<Movie> values;
     private Button deleteButton;
     private Gson gson;
-    private SharedPreferences sharedPreferences;
+
 
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -38,6 +40,7 @@ public class WatchListAdapter extends RecyclerView.Adapter<WatchListAdapter.View
         ViewHolder(View v) {
             super(v);
             layout = v;
+
             txtHeader = v.findViewById(R.id.firstLine);
             deleteButton = v.findViewById(R.id.buttonDelete);
             mImageView = v.findViewById(R.id.icon) ;
@@ -52,7 +55,8 @@ public class WatchListAdapter extends RecyclerView.Adapter<WatchListAdapter.View
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    WatchListAdapter(ArrayList<Movie> myDataset, RecyclerViewClickListener listener) {
+    WatchListAdapter(ArrayList<Movie> myDataset, RecyclerViewClickListener listener, Context c) {
+        sharedPreferences= c.getSharedPreferences("application_movie", Context.MODE_PRIVATE);
         values = myDataset;
         this.listener = listener;
     }
@@ -75,6 +79,7 @@ public class WatchListAdapter extends RecyclerView.Adapter<WatchListAdapter.View
     public void onBindViewHolder(ViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
+
         final Movie currentMovie = values.get(position);
         holder.txtHeader.setText(currentMovie.getTitle());
 
@@ -103,15 +108,21 @@ public class WatchListAdapter extends RecyclerView.Adapter<WatchListAdapter.View
     public interface RecyclerViewClickListener{
         void onClick(View v, int position);
     }
+    // Remove a movie from the watch list
     private void remove(int position) {
-        //sharedPreferences=getSharedPreferences("application_movie2", Context.MODE_PRIVATE);
 
+        //Remove it on the current activity
         values.remove(position);
         notifyItemRemoved(position);
+        notifyItemRangeChanged(position,values.size());
+
+        //Save the new watch list, without the movie deleted
         String jsonString = gson.toJson(values);
         sharedPreferences
                 .edit()
-                .putString(Constants.KEY_MOVIE_WATCHLIST, jsonString)
+                .putString(Constants.KEY_MOVIE_WATCHLIST,jsonString)
                 .apply();
+
+
     }
 }

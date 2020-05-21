@@ -58,15 +58,13 @@ public class DetailsActivity extends AppCompatActivity {
         alreadyAdded.setVisibility(View.INVISIBLE);
         gson = new GsonBuilder().setLenient().create();
         sharedPreferences=getSharedPreferences("application_movie", Context.MODE_PRIVATE);
-        Log.d("TAG", "Crash after0");
+
         watchList = getWatchList();
-        Log.d("TAG", "Crash after1");
         movie = fetchMovieFromPreviousActivity();
-        Log.d("TAG", "Crash after2");
+
 
         setDetails();
         testAlreadyInWatchList();
-        Log.d("TAG", "Crash after3");
         setButtonAddWatchList();
     }
 
@@ -82,7 +80,6 @@ public class DetailsActivity extends AppCompatActivity {
                         .edit()
                         .putString(Constants.KEY_MOVIE_FROM_DETAILS_TO_WATCHLIST, jsonString)
                         .apply();
-                Toast.makeText(getApplicationContext(),"List saved",Toast.LENGTH_SHORT).show();
 
                 startActivity(intent);
 
@@ -139,7 +136,7 @@ public class DetailsActivity extends AppCompatActivity {
             return gson.fromJson(jsonMovie, listType);
 
         }
-        return new ArrayList<Movie>();
+        return new ArrayList<>();
     }
 
 }
