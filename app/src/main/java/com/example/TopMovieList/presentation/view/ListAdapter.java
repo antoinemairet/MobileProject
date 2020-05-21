@@ -21,12 +21,12 @@ import com.squareup.picasso.Picasso;
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>  {
 
     private ArrayList<Movie> values;
-    private RecyclerViewClickListener listener;
+    private OnItemClickListener listener;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
-    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    static class ViewHolder extends RecyclerView.ViewHolder {
 
         // each data item is just a string in this case
         TextView txtHeader;
@@ -41,18 +41,14 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>  {
             txtHeader = v.findViewById(R.id.firstLine);
             txtFooter = v.findViewById(R.id.secondLine);
             mImageView = v.findViewById(R.id.icon) ;
-            v.setOnClickListener(this);
+
         }
 
-        @Override
-        public void onClick(View v) {
-            listener.onClick(v, getAdapterPosition());
-        }
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public ListAdapter(ArrayList<Movie> myDataset, RecyclerViewClickListener listener) {
-        values = myDataset;
+    public ListAdapter(ArrayList<Movie> myDataset, OnItemClickListener listener) {
+        this.values = myDataset;
         this.listener = listener;
     }
 
@@ -82,6 +78,11 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>  {
 
         // We set the image from the URL address using Picasso
         Picasso.get().load(currentMovie.getImage()).resize(500,500).into(holder.mImageView);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                listener.onItemClick(currentMovie);
+            }
+        });
 
     }
 
@@ -91,8 +92,9 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>  {
         return values.size();
     }
 
-    public interface RecyclerViewClickListener{
-        void onClick(View v, int position);
+
+    public interface OnItemClickListener {
+        void onItemClick(Movie item);
     }
 
 }
