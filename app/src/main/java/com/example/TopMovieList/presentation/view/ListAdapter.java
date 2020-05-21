@@ -20,28 +20,22 @@ import com.squareup.picasso.Picasso;
 
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>  {
 
-    private ArrayList<Movie> values;
     private OnItemClickListener listener;
+    private ArrayList<Movie> values;
 
-    // Provide a reference to the views for each data item
-    // Complex data items may need more than one view per item, and
-    // you provide access to all the views for a data item in a view holder
     static class ViewHolder extends RecyclerView.ViewHolder {
 
-        // each data item is just a string in this case
         TextView txtHeader;
         TextView txtFooter;
         ImageView mImageView;
         View layout;
 
         ViewHolder(View v) {
-
             super(v);
             layout = v;
             txtHeader = v.findViewById(R.id.firstLine);
             txtFooter = v.findViewById(R.id.secondLine);
             mImageView = v.findViewById(R.id.icon) ;
-
         }
 
     }
@@ -52,8 +46,6 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>  {
         this.listener = listener;
     }
 
-    // Create new views (invoked by the layout manager)
-
     @NonNull
     @Override
     public ListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -62,6 +54,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>  {
         // create a new view
         View v = inflater.inflate(R.layout.row_layout, parent, false);
         return new ViewHolder(v);
+
     }
 
     // Replace the contents of a view (invoked by the layout manager)
@@ -78,6 +71,8 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>  {
 
         // We set the image from the URL address using Picasso
         Picasso.get().load(currentMovie.getImage()).resize(500,500).into(holder.mImageView);
+
+        // Set the listener in case of the user click on this movie
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
                 listener.onItemClick(currentMovie);
@@ -86,13 +81,13 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>  {
 
     }
 
-    // Return the size of your dataset
+    // Return the size of the list
     @Override
     public int getItemCount() {
         return values.size();
     }
 
-
+    // Provide a suitable interface
     public interface OnItemClickListener {
         void onItemClick(Movie item);
     }

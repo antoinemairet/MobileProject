@@ -23,20 +23,24 @@ public class HomePageController {
     private final HomePageActivity view;
     private final Gson gson;
 
-
+    // Provide a suitable constructor
     public HomePageController(HomePageActivity homePageActivity, Gson gson, SharedPreferences sharedPreferences){
         this.gson = gson;
         this.sharedPreferences = sharedPreferences;
         this.view = homePageActivity;
     }
 
+    // When the activity Home Page is started
     public void onStart(final Movie movie){
             setButtonListShow();
             setButtonWatchList(movie);
     }
 
+    // Set the action of the list show button
     private void setButtonListShow() {
+
         Button buttonListShow = view.findViewById(R.id.buttonListMovie);
+
         //Set a listener to go to the mainActivity which display the list of movies
         buttonListShow.setOnClickListener(new View.OnClickListener() {
 
@@ -50,8 +54,11 @@ public class HomePageController {
         });
     }
 
+    // Set the action of the list show button
     private void setButtonWatchList(final Movie movie){
+
         Button buttonWatchList = view.findViewById(R.id.buttonWatchList);
+
         //Set a listener to go to the watch list which display all the movies added by the user
         buttonWatchList.setOnClickListener(new View.OnClickListener() {
 
@@ -64,10 +71,9 @@ public class HomePageController {
                         .edit()
                         .putString(Constants.KEY_MOVIE_FROM_DETAILS_TO_WATCHLIST, jsonString)
                         .apply();
-
                 view.startActivity(intent);
-
             }
         });
     }
+
 }

@@ -16,8 +16,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.TopMovieList.R;
 import com.example.TopMovieList.presentation.model.Movie;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
@@ -44,9 +42,8 @@ public class WatchListAdapter extends RecyclerView.Adapter<WatchListAdapter.View
         
     }
 
-    // Provide a suitable constructor (depends on the kind of dataset)
+    // Provide a suitable constructor
     public WatchListAdapter(ArrayList<Movie> myDataset, OnItemClickListener listener) {
- 
         this.values = myDataset;
         this.listener = listener;
     }
@@ -55,11 +52,11 @@ public class WatchListAdapter extends RecyclerView.Adapter<WatchListAdapter.View
     @NonNull
     @Override
     public WatchListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        // create a new view
+
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View v = inflater.inflate(R.layout.row_layout_watch_list, parent, false);
-
         return new ViewHolder(v);
+
     }
 
     // Replace the contents of a view
@@ -68,6 +65,8 @@ public class WatchListAdapter extends RecyclerView.Adapter<WatchListAdapter.View
     public void onBindViewHolder(ViewHolder holder, final int position) {
 
         final Movie currentMovie = values.get(position);
+
+        // We set the title of the movie
         holder.txtHeader.setText(currentMovie.getTitle());
 
         // We set the image from the URL address using Picasso
@@ -81,10 +80,9 @@ public class WatchListAdapter extends RecyclerView.Adapter<WatchListAdapter.View
                 notifyItemRemoved(position);
                 notifyItemRangeChanged(position,values.size());
                 listener.deleteMovie(currentMovie, values);
-
-
             }
         });
+        // Set the listener when the user click on particular item (movie)
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
                 listener.onItemClick(currentMovie);
@@ -93,17 +91,16 @@ public class WatchListAdapter extends RecyclerView.Adapter<WatchListAdapter.View
 
     }
 
+    // Provide a suitable interface
     public interface OnItemClickListener {
         void onItemClick(Movie item);
         void deleteMovie(Movie item, ArrayList<Movie> values);
     }
 
-
-    // Return the size of your dataset
+    // Return the size of the list
     @Override
     public int getItemCount() {
         return values.size();
     }
-
 
 }

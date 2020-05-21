@@ -28,12 +28,14 @@ public class DetailsController {
     private String jsonMovie;
     private final Gson gson;
 
+    // Provide a suitable constructor
     public DetailsController(DetailsActivity detailsActivity, Gson gson, SharedPreferences sharedPreferences) {
         this.gson = gson;
         this.sharedPreferences = sharedPreferences;
         this.view = detailsActivity;
     }
 
+    // Set the button to add a the movie to the watch list
     public void setButtonAddWatchList(Button buttonAddWatchListShow, final Movie movie) {
 
         buttonAddWatchListShow.setOnClickListener(new View.OnClickListener() {
@@ -54,13 +56,11 @@ public class DetailsController {
         });
     }
 
-    // Check if the movie is already in the watch list, if it is we removed the button to add it and display a message
+    // Check if the movie is already in the watch list, if it is then we removed the button to add it and display a message
     public void testAlreadyInWatchList(ArrayList<Movie> watchList, Movie movie, TextView alreadyAdded, Button buttonAddWatchListShow) {
         if(watchList != null){
-
-            for (Movie m : watchList) {
-
-                if (movie.getId().equals(m.getId())) { // Already in the watchList
+            for (Movie m : watchList) { // Check through all the list
+                if (movie.getId().equals(m.getId())) { // True if already in the watchList then we swith the display
                     buttonAddWatchListShow.setVisibility(View.GONE);
                     alreadyAdded.setVisibility(View.VISIBLE);
                 }
@@ -70,7 +70,9 @@ public class DetailsController {
 
     // Fetch the object movie selected by the user the cache
     public Movie fetchMovieFromPreviousActivity() {
+
         jsonMovie = sharedPreferences.getString(Constants.KEY_MOVIE_FROM_MAIN_TO_DETAILS,null);
+
         if(jsonMovie == null) {
             return null;
         }else {
@@ -79,11 +81,10 @@ public class DetailsController {
 
     }
 
-    // get the watch list with sharedPreferences
+    // Get the watch list with sharedPreferences
     public ArrayList<Movie> getWatchList() {
 
         jsonMovie = sharedPreferences.getString(Constants.KEY_MOVIE_WATCHLIST, null);
-
         if(jsonMovie != null) {
 
             Type listType = new TypeToken<ArrayList<Movie>>() {}.getType();

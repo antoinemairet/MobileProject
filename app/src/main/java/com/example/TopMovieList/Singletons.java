@@ -7,18 +7,17 @@ package com.example.TopMovieList;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-
 import com.example.TopMovieList.data.MovieAPI;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Singletons {
-    private static Gson gsonInstance;
+
     private static SharedPreferences sharedPreferencesInstance;
     private static MovieAPI movieApiInstance;
+    private static Gson gsonInstance;
 
     public static SharedPreferences getSharedPreferences(Context context){
         if(sharedPreferencesInstance == null){
@@ -45,6 +44,5 @@ public class Singletons {
         }
         return movieApiInstance;
     }
-
 
 }

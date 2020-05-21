@@ -20,14 +20,8 @@ import java.util.ArrayList;
 
 public class DetailsActivity extends AppCompatActivity {
 
-    public Movie movie;
-    private TextView fullTitle ;
-    private TextView rank;
-    private TextView crew;
-    private TextView rating;
-    private TextView year;
-    private ImageView image ;
     public DetailsController controller;
+    private Movie movie;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,34 +33,41 @@ public class DetailsActivity extends AppCompatActivity {
 
         Button buttonAddWatchListShow = findViewById(R.id.AddWatchListButton);
         TextView alreadyAdded = findViewById(R.id.txtAlreadyInWatchList);
-        fullTitle = findViewById(R.id.fullTitle);
-        rank = findViewById(R.id.rank);
-        crew = findViewById(R.id.crew);
-        rating = findViewById(R.id.rating);
-        year = findViewById(R.id.year);
-        image = findViewById(R.id.imageMovie);
 
+        //Hide the display "already added"
         alreadyAdded.setVisibility(View.INVISIBLE);
 
         ArrayList<Movie> watchList = controller.getWatchList();
         movie = controller.fetchMovieFromPreviousActivity();
 
         setDetails();
+
         controller.testAlreadyInWatchList(watchList, movie, alreadyAdded, buttonAddWatchListShow);
         controller.setButtonAddWatchList(buttonAddWatchListShow, movie);
+
     }
 
     // Set all the details of the movie on the different text view
     private void setDetails() {
+
+        //Define all the txtView et image with their id
+        TextView fullTitle = findViewById(R.id.fullTitle);
+        TextView rank = findViewById(R.id.rank);
+        TextView crew = findViewById(R.id.crew);
+        TextView rating = findViewById(R.id.rating);
+        TextView year = findViewById(R.id.year);
+        ImageView image = findViewById(R.id.imageMovie);
+
         // We set all the text fields
         fullTitle.setText(movie.getFullTitle());
         rank.setText(String.format("Rank: %s", movie.getRank()));
         crew.setText(String.format("Crew: %s", movie.getCrew()));
         rating.setText(String.format("Rating: %s", movie.getImDbRating()));
         year.setText(String.format("Year: %s", movie.getYear()));
+
         // We set the image from the URL address using Picasso
         Picasso.get().load(movie.getImage()).into(image);
-    }
 
+    }
 
 }

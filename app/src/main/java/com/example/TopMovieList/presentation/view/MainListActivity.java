@@ -19,12 +19,8 @@ import java.util.ArrayList;
 
 public class MainListActivity extends AppCompatActivity  {
 
+    public MainListController controller;
 
-    private ArrayList<Movie> listMovie;
-    private String jsonString;
-
-
-    MainListController controller;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -34,11 +30,9 @@ public class MainListActivity extends AppCompatActivity  {
         controller = new MainListController(this, Singletons.getGson(), Singletons.getSharedPreferences(getApplicationContext()));
         controller.onStart();
 
-
     }
 
-
-    // Display the list of movies using an adapter
+    // Display the list of movies using an listadapter
     public void showList(ArrayList<Movie> listMovie) {
 
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
@@ -59,7 +53,5 @@ public class MainListActivity extends AppCompatActivity  {
     public void showError() {
         Toast.makeText(getApplicationContext(),"API Error",Toast.LENGTH_SHORT).show();
     }
-
-
 
 }

@@ -12,7 +12,6 @@ import com.example.TopMovieList.Singletons;
 import com.example.TopMovieList.presentation.controller.HomePageController;
 import com.example.TopMovieList.presentation.model.Movie;
 
-
 public class HomePageActivity extends AppCompatActivity {
 
     public HomePageController controller;

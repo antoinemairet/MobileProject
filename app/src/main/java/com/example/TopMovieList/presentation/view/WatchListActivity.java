@@ -7,10 +7,8 @@ package com.example.TopMovieList.presentation.view;
 
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,38 +20,41 @@ import java.util.ArrayList;
 
 public class WatchListActivity extends AppCompatActivity {
 
-    private TextView txtHowAddToTheList;
-    private TextView txtEmptyList;
     public WatchListController controller;
+    private ArrayList<Movie> watchListMovie;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_watch_list);
-        txtEmptyList = findViewById(R.id.txtWatchListEmpty);
-        txtHowAddToTheList = findViewById(R.id.txtHowAddMovie);
 
         controller = new WatchListController(this, Singletons.getGson(), Singletons.getSharedPreferences(getApplicationContext()));
 
-        ArrayList<Movie> watchListMovie = controller.getWatchList();
-        watchListMovie = controller.ifNewMovieInWatchList(watchListMovie); // Add a new movie if user add one
-        controller.saveWatchList(watchListMovie); // Save the modification of the watch list
-        watchListMovie = controller.getWatchList(); // get the watch list
+        //Step 1 : get the watch list
+        watchListMovie = controller.getWatchList();
+
+        // Step 2 : Check if we have a movie to add (if we are from details)
+        watchListMovie = controller.ifNewMovieInWatchList(watchListMovie);
+
+        // Step 3 : Display the watch list
         displayOfWatchListActivity(watchListMovie);
 
     }
 
+    // Manage the display if the watch list is empty and if not called the showWatchList function
     private void displayOfWatchListActivity(ArrayList<Movie> watchListMovie) {
 
-        if(watchListMovie.size() != 0) {
+        TextView txtEmptyList = findViewById(R.id.txtWatchListEmpty);
+        TextView txtHowAddToTheList = findViewById(R.id.txtHowAddMovie);
+
+        if(watchListMovie.size() != 0) { // If the watch list is empty, set visible specific display
             txtEmptyList.setVisibility(View.INVISIBLE);
             txtHowAddToTheList.setVisibility(View.INVISIBLE);
             showWatchList(watchListMovie);
-        }else{
+        }else{ // Watch list not empty and set invisible specific display
             txtEmptyList.setVisibility(View.VISIBLE);
             txtHowAddToTheList.setVisibility(View.VISIBLE);
-            Toast.makeText(getApplicationContext(),"WatchList Null",Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -67,18 +68,17 @@ public class WatchListActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         WatchListAdapter mAdapter = new WatchListAdapter(watchListMovie, new WatchListAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(Movie item) {
+            public void onItemClick(Movie item) { // Function when user click on the movie
                 controller.onItemClick(item);
             }
 
             @Override
-            public void deleteMovie(Movie item, ArrayList<Movie> values) {
+            public void deleteMovie(Movie item, ArrayList<Movie> values) { // Function when the user click on delete the movie
                 controller.deleteMovieFromWatchList(item,values);
             }
         });
         recyclerView.setAdapter(mAdapter);
 
     }
-
 
 }

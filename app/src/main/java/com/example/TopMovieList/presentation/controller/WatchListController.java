@@ -20,39 +20,47 @@ import java.util.ArrayList;
 public class WatchListController {
 
     private final SharedPreferences sharedPreferences;
-    private final WatchListActivity view;
-    private final Gson gson;
-    private String jsonMovie;
+    private WatchListActivity view;
     private String jsonString;
+    private String jsonMovie;
+    private final Gson gson;
 
+    // Provide a suitable constructor
     public WatchListController(WatchListActivity watchListActivity, Gson gson, SharedPreferences sharedPreferences){
         this.gson = gson;
         this.sharedPreferences = sharedPreferences;
         this.view = watchListActivity;
-
     }
 
+    // Check if we have a movie to add to the watch list
     public ArrayList<Movie> ifNewMovieInWatchList(ArrayList<Movie> watchListMovie) {
 
         jsonMovie = sharedPreferences.getString(Constants.KEY_MOVIE_FROM_DETAILS_TO_WATCHLIST,null);
         Movie movie = gson.fromJson(jsonMovie, Movie.class);
-        if(movie.getId().equals("-1")) { // From the home page without a movie to add
+
+        if(movie.getId().equals("-1")) { // We are from the home page without a movie to add
 
             return watchListMovie;
 
-        }else { // From details with a movie to add
+        }else { // We are from details with a movie to add
 
             watchListMovie = getWatchList();
             watchListMovie.add(movie);
         }
+
+        // We saved the list in the cache
+        saveWatchList(watchListMovie);
+
+        //We return it
         return watchListMovie;
+
     }
 
     // Fetch the watch list from the cache
     public ArrayList<Movie> getWatchList() {
 
         jsonMovie = sharedPreferences.getString(Constants.KEY_MOVIE_WATCHLIST,null);
-        if(jsonMovie == null) { // Empty watch list
+        if(jsonMovie == null) { // Watch list empty
 
             return new ArrayList<>();
 
@@ -64,7 +72,7 @@ public class WatchListController {
     }
 
     // Function for save the list using sharedPreference
-    public void saveWatchList(ArrayList<Movie> watchListMovie) {
+    private void saveWatchList(ArrayList<Movie> watchListMovie) {
 
         jsonString = gson.toJson(watchListMovie);
         sharedPreferences
@@ -89,7 +97,10 @@ public class WatchListController {
     }
 
     public void deleteMovieFromWatchList(Movie item, ArrayList<Movie> values) {
+
+        // Remove the movie from the watch list
         values.remove(item);
+
         //Save the new watch list, without the movie deleted
         String jsonString = gson.toJson(values);
         sharedPreferences
@@ -98,5 +109,6 @@ public class WatchListController {
                 .apply();
 
     }
+
 }
 

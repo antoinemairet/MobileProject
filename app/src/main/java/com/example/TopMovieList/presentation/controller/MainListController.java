@@ -7,7 +7,6 @@ package com.example.TopMovieList.presentation.controller;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import com.example.TopMovieList.Constants;
 import com.example.TopMovieList.Singletons;
@@ -27,17 +26,19 @@ import retrofit2.Response;
 public class MainListController {
 
     private SharedPreferences sharedPreferences;
-    private Gson gson;
     private ArrayList<Movie> listMovie;
-    private String jsonString;
     private MainListActivity view;
+    private String jsonString;
+    private Gson gson;
 
+    // Provide a suitable constructor
     public MainListController(MainListActivity mainListActivity,Gson gson, SharedPreferences sharedPreferences) {
         this.gson = gson;
         this.sharedPreferences = sharedPreferences;
         this.view = mainListActivity;
     }
 
+    // When the activity MainList is started
     public void onStart(){
 
         //Fetch the list saved in the cache
@@ -53,7 +54,6 @@ public class MainListController {
 
     // Call the API in order to fill our list of movies
     private void makeApiCall(){
-
 
         Call<RestMoviesResponse> call = Singletons.getMovieAPI().getMoviesResponse();
         call.enqueue(new Callback<RestMoviesResponse>() {
@@ -83,7 +83,6 @@ public class MainListController {
                 .edit()
                 .putString(Constants.KEY_MOVIE_LIST, jsonString)
                 .apply();
-        Toast.makeText(view,"List saved",Toast.LENGTH_SHORT).show();
     }
 
     // Function used to fetch data from the cache and return it as list of movies

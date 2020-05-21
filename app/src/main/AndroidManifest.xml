@@ -9,9 +9,10 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:label="Top Movies"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:icon="@mipmap/ic_top_movies"
+        android:roundIcon="@mipmap/ic_top_movies"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
