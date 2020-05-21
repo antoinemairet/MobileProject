@@ -7,7 +7,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/gradient_background">
@@ -87,5 +86,49 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/crew"
         app:layout_constraintVertical_bias="0.066" />
+
+    <Button
+        android:id="@+id/AddWatchListButton"
+        android:layout_width="190dp"
+        android:layout_height="62dp"
+        android:text="@string/add_to_your_watch_list"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.914"
+        app:icon="@drawable/ic_add_black_24dp"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+        />
+
+    <TextView
+        android:id="@+id/txtAlreadyInWatchList"
+        android:layout_width="149dp"
+        android:layout_height="79dp"
+        android:background="@drawable/border_text_view"
+        android:drawableRight="@drawable/ic_thumb_up_black_30dp"
+        android:gravity="center"
+        android:text="@string/AlreadyAdded"
+        android:textSize="16sp"
+        android:textStyle="italic"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.95" />
+
+    <TextView
+        android:id="@+id/txtSource"
+        android:layout_width="220dp"
+        android:layout_height="23dp"
+        android:autoLink="web"
+        android:text="@string/source_https_www_imdb_com"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

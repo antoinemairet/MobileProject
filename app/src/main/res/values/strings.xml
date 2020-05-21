@@ -4,8 +4,8 @@
   -->
 
 <resources>
-    <string name="app_name">Top Movies List</string>
-    <string name="Details"> Movie Details</string>
+    <string name="app_name">    Top Movie</string>
+    <string name="Details">    Movie Details</string>
     <string name="fulltitle">fullTitle</string>
     <string name="rank">RANK</string>
     <string name="year">year</string>
@@ -14,8 +14,14 @@
     <string name="todo">TODO</string>
     <string name="example_application">Example application</string>
     <string name="description">Description</string>
-    <string name="let_s_go">Let\'s Go</string>
+    <string name="let_s_go">Top Movie</string>
     <string name="top_movies_to_watch">Top Movies To Watch</string>
     <string name="Name"> Antoine Mairet </string>
+    <string name="add_to_your_watch_list">Add to your watch list</string>
+    <string name="AlreadyAdded">Already added to your watch list</string>
+    <string name="source_https_www_imdb_com">Source : https://www.imdb.com</string>
+    <string name="watch_list">Watch List</string>
+    <string name="watch_list_empty">Watch list empty ; (</string>
+    <string name="AddOne">Tips: Add one from the details of a movie !</string>
 
 </resources>

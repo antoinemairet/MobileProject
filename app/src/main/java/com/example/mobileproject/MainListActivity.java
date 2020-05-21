@@ -9,46 +9,46 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MainActivity extends AppCompatActivity  {
+public class MainListActivity extends AppCompatActivity  {
 
     private ListAdapter.RecyclerViewClickListener listener;
     private SharedPreferences sharedPreferences;
     private ArrayList<Movie> listMovie;
+    private String jsonString;
     private Gson gson;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        gson = new GsonBuilder()
-                .setLenient()
-                .create();
-
         sharedPreferences=getSharedPreferences("application_movie", Context.MODE_PRIVATE);
+        gson = new GsonBuilder().setLenient().create();
+
+        //Fetch the list saved in the cache
         listMovie = getDataFromCache();
+
+        // If we found nothing in the cache we call the API to fill the list otherwise we display it
         if(listMovie!= null) {
             showList(listMovie);
         }else{
@@ -56,10 +56,10 @@ public class MainActivity extends AppCompatActivity  {
         }
     }
 
-    // Function used to fetch data from the cache
+    // Function used to fetch data from the cache and return it as list of movies
     private ArrayList<Movie> getDataFromCache() {
-        String jsonMovie = sharedPreferences.getString(Constants.KEY_MOVIE_LIST,null);
 
+        String jsonMovie = sharedPreferences.getString(Constants.KEY_MOVIE_LIST,null);
         if(jsonMovie == null) {
             return null;
         }else {
@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity  {
         }
     }
 
-    // Show the list of movies using an adapter
+    // Display the list of movies using an adapter
     private void showList(ArrayList<Movie> listMovie) {
 
         setOnClickListener();
@@ -87,21 +87,29 @@ public class MainActivity extends AppCompatActivity  {
         listener = new ListAdapter.RecyclerViewClickListener() {
             @Override
             public void onClick(View v, int position) {
-                Intent intent = new Intent(MainActivity.this,DetailsActivity.class);
+                Intent intent = new Intent(MainListActivity.this,DetailsActivity.class);
 
                 //Give all the information of a particular movie to the next activity: DetailsActivity
-                intent.putExtra("fullTitle", listMovie.get(position).getFullTitle());
-                intent.putExtra("rank", listMovie.get(position).getRank());
-                intent.putExtra("crew", listMovie.get(position).getCrew());
-                intent.putExtra("rating", listMovie.get(position).getImDbRating());
-                intent.putExtra("year", listMovie.get(position).getYear());
-                intent.putExtra("image",listMovie.get(position).getImage());
+                Movie movie = new Movie(listMovie.get(position).getId(),listMovie.get(position).getRank(),
+                                null,listMovie.get(position).getTitle(),listMovie.get(position).getFullTitle(),
+                                listMovie.get(position).getYear(),listMovie.get(position).getImage(),listMovie.get(position).getCrew(),
+                        listMovie.get(position).getImDbRating(),null);
+
+                //Save the movie in the cache
+                jsonString = gson.toJson(movie);
+                sharedPreferences
+                        .edit()
+                        .putString(Constants.KEY_MOVIE_FROM_MAIN_TO_DETAILS, jsonString)
+                        .apply();
+
+                // Start of the DetailsActivity
                 startActivity(intent);
             }
         };
 
     }
 
+    // Call the API in order to fill our list of movies
     private void makeApiCall(){
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -116,11 +124,9 @@ public class MainActivity extends AppCompatActivity  {
             @Override
             public void onResponse(@NonNull Call<RestMoviesResponse> call, @NonNull Response<RestMoviesResponse> response) {
                 if(response.isSuccessful() && response.body() != null){
-
                     listMovie = response.body().items;
                     saveList(listMovie);
                     showList(listMovie);
-
                 }else{
                     showError();
                 }
@@ -134,9 +140,9 @@ public class MainActivity extends AppCompatActivity  {
 
     }
 
-    // Function for save the list using sharedPreference
+    // Function for save the list using sharedPreferences
     private void saveList(List<Movie> listMovie) {
-        String jsonString = gson.toJson(listMovie);
+        jsonString = gson.toJson(listMovie);
         sharedPreferences
                 .edit()
                 .putString(Constants.KEY_MOVIE_LIST, jsonString)

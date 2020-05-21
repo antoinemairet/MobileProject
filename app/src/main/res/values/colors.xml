@@ -9,4 +9,5 @@
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
     <color name="colorBlack">#000000</color>
+    <color name="border_color">#4E3F3F</color>
 </resources>

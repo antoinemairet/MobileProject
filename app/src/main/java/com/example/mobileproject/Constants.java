@@ -9,4 +9,7 @@ package com.example.mobileproject;
 public class Constants {
     static String KEY_MOVIE_LIST = "jsonListMovie";
     static final String BASE_URL = "https://imdb-api.com/";
+    static String KEY_MOVIE_WATCHLIST = "jsonWatchListMovie";
+    static String KEY_MOVIE_FROM_MAIN_TO_DETAILS = "jsonMovieFromMainToDetails";
+    static String KEY_MOVIE_FROM_DETAILS_TO_WATCHLIST = "jsonMovieFromDetailsToWatchList";
 }

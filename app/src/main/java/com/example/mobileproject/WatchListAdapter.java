@@ -4,40 +4,44 @@
  */
 
 package com.example.mobileproject;
+
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import java.util.ArrayList;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.squareup.picasso.Picasso;
+import java.util.ArrayList;
 
-public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>  {
-
+public class WatchListAdapter extends RecyclerView.Adapter<WatchListAdapter.ViewHolder>{
     private ArrayList<Movie> values;
     private RecyclerViewClickListener listener;
+    private Button deleteButton;
+    private Gson gson;
+    private SharedPreferences sharedPreferences;
 
-    // Provide a reference to the views for each data item
-    // Complex data items may need more than one view per item, and
-    // you provide access to all the views for a data item in a view holder
+
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        // each data item is just a string in this case
         TextView txtHeader;
-        TextView txtFooter;
         ImageView mImageView;
         View layout;
 
         ViewHolder(View v) {
-
             super(v);
             layout = v;
             txtHeader = v.findViewById(R.id.firstLine);
-            txtFooter = v.findViewById(R.id.secondLine);
+            deleteButton = v.findViewById(R.id.buttonDelete);
             mImageView = v.findViewById(R.id.icon) ;
+            gson = new GsonBuilder().setLenient().create();
             v.setOnClickListener(this);
         }
 
@@ -48,39 +52,47 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>  {
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    ListAdapter(ArrayList<Movie> myDataset, RecyclerViewClickListener listener) {
+    WatchListAdapter(ArrayList<Movie> myDataset, RecyclerViewClickListener listener) {
         values = myDataset;
         this.listener = listener;
     }
 
     // Create new views (invoked by the layout manager)
-
     @NonNull
     @Override
-    public ListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+    public WatchListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
+                                                     int viewType) {
         // create a new view
-        View v = inflater.inflate(R.layout.row_layout, parent, false);
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        View v = inflater.inflate(R.layout.row_layout_watch_list, parent, false);
+
         return new ViewHolder(v);
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
+    // Replace the contents of a view
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-
-        //Get the current movie
+        // - get element from your dataset at this position
+        // - replace the contents of the view with that element
         final Movie currentMovie = values.get(position);
-
-        //We set its title and its rank
         holder.txtHeader.setText(currentMovie.getTitle());
-        holder.txtFooter.setText("Rank : "+currentMovie.getRank());
 
         // We set the image from the URL address using Picasso
         Picasso.get().load(currentMovie.getImage()).resize(500,500).into(holder.mImageView);
 
+        // Set the listener of the button delete
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                remove(position);
+                values.remove(currentMovie);
+
+            }
+        });
+
     }
+
 
     // Return the size of your dataset
     @Override
@@ -91,5 +103,15 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder>  {
     public interface RecyclerViewClickListener{
         void onClick(View v, int position);
     }
+    private void remove(int position) {
+        //sharedPreferences=getSharedPreferences("application_movie2", Context.MODE_PRIVATE);
 
+        values.remove(position);
+        notifyItemRemoved(position);
+        String jsonString = gson.toJson(values);
+        sharedPreferences
+                .edit()
+                .putString(Constants.KEY_MOVIE_WATCHLIST, jsonString)
+                .apply();
+    }
 }
