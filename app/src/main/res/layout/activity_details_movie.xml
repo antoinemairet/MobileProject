@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
+  ~ MIT License
   ~ Copyright (c) 2020. Antoine Mairet
-  ~ All Rights Reserved
   -->
 
 <androidx.constraintlayout.widget.ConstraintLayout

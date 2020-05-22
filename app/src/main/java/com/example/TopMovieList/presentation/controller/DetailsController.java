@@ -1,6 +1,6 @@
 /*
+ * MIT License
  * Copyright (c) 2020. Antoine Mairet
- * All Rights Reserved
  */
 
 package com.example.TopMovieList.presentation.controller;
@@ -72,7 +72,6 @@ public class DetailsController {
     public Movie fetchMovieFromPreviousActivity() {
 
         jsonMovie = sharedPreferences.getString(Constants.KEY_MOVIE_FROM_MAIN_TO_DETAILS,null);
-
         if(jsonMovie == null) {
             return null;
         }else {
