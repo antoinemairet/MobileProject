@@ -1,6 +1,6 @@
 /*
+ * MIT License
  * Copyright (c) 2020. Antoine Mairet
- * All Rights Reserved
  */
 
 package com.example.TopMovieList;
